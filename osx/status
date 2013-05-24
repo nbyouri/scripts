@@ -1,8 +1,4 @@
 #!/bin/bash
-# To be used with lemonboy bar,
-# Beastie.
-# put the awk scripts in ~/Scripts
-# Require TemperatureMonitor.app
 
 Current_Workspace_UH() {
 		CW=$(xprop -root _NET_CURRENT_DESKTOP| 
@@ -11,12 +7,12 @@ Current_Workspace_UH() {
 		MAILS=$(awk -f ~/Scripts/mail.awk)
 		DATE=$(date "+%d/%H:%M")
 		VOL=$(awk -f ~/Scripts/volume.awk)
-		echo -n "\l\f1\u5\b0 \u2\b2\f3 $CW \b0\f4 \b0\u5\f1  \u2\f5\b2 $MAILS \b0\f4 \f1\u5\b0  \u2\b2\f6 $UH  \u5\b0\f1  \u2\b2\f5 $DATE \b0\f1\u5 \b2\u2\f3\ $VOL " 
+		echo -n "\l\f1\u5\b0 \u2\b2\f3 $CW \b0\f4\b0\u5\f1  \u2\f5\b2 $MAILS \f4\f1\u5\b0  \u2\b2\f6 $UH  \u5\b0\f1  \u2\b2\f5 $DATE \b0\f1\u5 \b2\u2\f3\ $VOL " 
 }
 
 Batt_Disk_Mem_Usage() {
 		DISKUSED=$(df -h|awk '/disk0s2/ {print $8}')
-		MEMUSED=$(top -l 1|awk '/PhysMem/ {print $4}')
+		MEMUSED=$(awk -f ~/Scripts/mem.awk)
 		BATTUSED=$(pmset -g batt|awk '/%/ {sub(/;/,"",$2);print$2}')
 		CPUTEMP=$(/Applications/TemperatureMonitor.app/Contents/MacOS/tempmonitor -c|
 		awk '{print $1t"°"}')

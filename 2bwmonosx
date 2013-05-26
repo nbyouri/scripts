@@ -1,5 +1,22 @@
 #!/bin/sh
 
+echo "Grab a version of macports and the compilers here:";
+echo "https://distfiles.macports.org/MacPorts/";
+echo;
+echo "https://github.com/kennethreitz/osx-gcc-installer";
+
+hash git &> /dev/null
+if [ $? -eq 1 ]; then
+		echo "You need to install git.";
+		printf 'Install? [y/n]: 'read -r INPUT;
+		case $INPUT in
+				y)
+						sudo port install git-core;
+						;;
+				n)
+						;;
+		esac
+else
 if [ `uname` = "Darwin" ]; then
 	if [ -f 2bwm.c ]; then
 		echo "We are in the git repo, continuing...";
@@ -75,4 +92,4 @@ if [ `uname` = "Darwin" ]; then
 else
 		make;
 fi
-
+fi

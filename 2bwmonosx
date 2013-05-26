@@ -1,17 +1,19 @@
 #!/bin/sh
 
 echo "Grab a version of macports and the compilers here:";
+echo;
 echo "https://distfiles.macports.org/MacPorts/";
 echo;
 echo "https://github.com/kennethreitz/osx-gcc-installer";
 
-hash git &> /dev/null
+hash git &> /dev/null;
 if [ $? -eq 1 ]; then
 		echo "You need to install git.";
 		printf 'Install? [y/n]: 'read -r INPUT;
 		case $INPUT in
 				y)
-						sudo port install git-core;
+						sudo port install git-core > /dev/null;
+						echo "git is installed.";
 						;;
 				n)
 						;;
@@ -25,7 +27,7 @@ if [ `uname` = "Darwin" ]; then
 			case $INPUT in
 					y)
 						echo "Cloning the repo...";
-						git clone https://github.com/venam/2bwm
+						git clone https://github.com/venam/2bwm --quiet > /dev/null;
 						cp 2bwmonosx 2bwm;
 						cd 2bwm;
 						;;
@@ -54,9 +56,11 @@ if [ `uname` = "Darwin" ]; then
 	   mv config.h.osx config.h;
 	   echo;
 	   echo "Building..." 
-	   make 2> /dev/null;
+	   make > /dev/null;
 	   echo;
-	   echo "and don't forget to check config.h";
+		 echo "2bwm was successfully built!";
+		 echo"
+	   echo "don't forget to check config.h";
 	   echo;
 	   printf 'Do you want to install now? [y/n]: '; read -r INPUT;
 	   echo;
@@ -75,7 +79,7 @@ if [ `uname` = "Darwin" ]; then
 		printf 'Do you want to install them now? [y/n]: '; read -r INPUT;
 		case $INPUT in 
 			y)
-				sudo port install xorg-libxcb xorg-xcb-util xorg-xcb-util-wm xorg-xcb-util-keysyms;
+				sudo port install xorg-libxcb xorg-xcb-util xorg-xcb-util-wm xorg-xcb-util-keysyms > /dev/null;
 				if [ -d 2bwm ]; then
 					cd 2bwm;
 					./2bwm/2bwmonosx

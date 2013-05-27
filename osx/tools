@@ -2,8 +2,8 @@ vm_stat
 launchctl
 defaults
 sysctl
-ioreg
-system_profiler
+ioreg !slow
+system_profiler !slow
 pmset
 nvram
 sw_vers

@@ -1,0 +1,20 @@
+window title
+need to patch 2bwm, and restart 
+and always on top and ignore
+irc notifications
+more efficient cpu usage, temp, uh
+brightness
+keyboard brightness
+mpc, cmus? status
+
+vm_stat
+launchctl
+defaults
+sysctl
+ioreg can be slow 
+system_profiler !slow
+pmset
+nvram
+sw_vers
+core utils (df, top, ...)
+systemsetup

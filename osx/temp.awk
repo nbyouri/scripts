@@ -1,9 +1,10 @@
 # This requires TemperatureMonitor.app.
 BEGIN {
-		cmd = "/Applications/TemperatureMonitor.app/Contents/MacOS/tempmonitor -c"
-
+		cmd = "smc -f"
 		while (cmd | getline) {
-				print $1"°"
+				if(/Temp         =/) {
+						printf("%.0f°\n", $3)
+				}
 		}
 }
 

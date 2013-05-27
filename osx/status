@@ -13,12 +13,13 @@ Left_Bar() {
 }
 
 Right_Bar() {
+		FANSPED=$(awk -f ~/Scripts/fan.awk)
 		DISKUSD=$(df -h|awk '/disk0s2/ {print $8}')
 		MEMUSED=$(awk -f ~/Scripts/mem.awk)
 		BATTUSD=$(awk -f ~/Scripts/batt.awk)
 		CPUTEMP=$(awk -f ~/Scripts/temp.awk)
 		CPUAVEG=$(top -l 1|awk '/CPU usage/ {print $3}')
-		echo -n "\r\b0\u5\f1  \b2\u2\f3 $CPUAVEG \u5\b0\f1  \b2\u2\f5 $CPUTEMP \u5\b0\f1 \u2\b2\f6 $BATTUSD \u5\b0\f1  \u2\f5\b2 $DISKUSD \u5\b0\f1  \u2\b2\f3 $MEMUSED " 
+		echo -n "\r\b0\u5\f1  $NO\f6 $FANSPED \b0\u5\f1  \b2\u2\f3 $CPUAVEG \u5\b0\f1  \b2\u2\f5 $CPUTEMP \u5\b0\f1 \u2\b2\f6 $BATTUSD \u5\b0\f1  \u2\f5\b2 $DISKUSD \u5\b0\f1  \u2\b2\f3 $MEMUSED " 
 }
 
 Center_Bar() {
@@ -27,6 +28,6 @@ Center_Bar() {
 }
 
 while true; do
-		echo "$(Right_Bar)$(Center_Bar)$(Left_Bar)"
+		echo "$(Left_Bar)$(Center_Bar)$(Right_Bar)"
 		sleep 1;
 done

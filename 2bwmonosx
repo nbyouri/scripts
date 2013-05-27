@@ -45,10 +45,12 @@ if [ `uname` = "Darwin" ]; then
 	   [ -f /opt/local/include/xcb/xcb_util.h ]; then 
 	   echo "You seem to have the needed xcb libraries, let's build this:";
 	   echo;
+		 echo "Patching the Makefile for osx...";
 	   awk '{gsub(/usr/, "opt"); print}' Makefile > Makefile.osx;
 	   mv Makefile.osx Makefile;
 	   echo;
 	   echo "Modifying 2bwm path to /opt/local in config.h..."
+		 echo;
 	   echo "Changing the mod key to cmd(apple) key..."
 	   awk '{gsub(/usr/, "opt"); sub(/XCB_MOD_MASK_4/, "XCB_MOD_MASK_2"); print}' config.h > config.h.osx;
 	   mv config.h.osx config.h;

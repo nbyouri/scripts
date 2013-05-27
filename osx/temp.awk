@@ -1,4 +1,3 @@
-# This requires TemperatureMonitor.app.
 BEGIN {
 		cmd = "smc -f"
 		while (cmd | getline) {

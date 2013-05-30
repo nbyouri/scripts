@@ -2,12 +2,10 @@ window title
 need to patch 2bwm, and restart,  in config.h
 and always on top and ignore
 irc notifications
-more efficient cpu usage
 brightness
 keyboard brightness
-mpc, cmus? status
-purgeable memory?
-macports packages?
+cmus? status
+purgeable memory? -- top -S|awk '{print $2}'
 
 vm_stat
 launchctl

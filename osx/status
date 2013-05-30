@@ -4,7 +4,9 @@ IC="\u5\b0\f1"
 NO="\u2\b2"
 
 Workspaces() {
+		ACT=$(awk -f ~/Scripts/activewin.awk)
 		CUR=$(awk -f ~/Scripts/lastfm.awk)
+		#MPC=$(mpc -p 8000|head -1)
   	UH=$(awk -f ~/Scripts/uh.awk)
 		MAIL=$(awk -f ~/Scripts/mail.awk)
 		DATE=$(date "+%d/%H:%M")
@@ -26,7 +28,7 @@ Workspaces() {
 				fi
 		done
 		#echo -n "\l${buffer}"
-		echo -n "\l${buffer} $IC  $NO\f5 $MAIL $IC  $NO\f6 $UH  $IC  $NO\f5 $DATE \u5\b0\f1 $NO\f3 $VOL $IC  $NO \f6$NET $NO\b0\u5\f1  $NO $CUR"
+		echo -n "\l${buffer} $IC  $NO\f5 $MAIL $IC  $NO\f6 $UH  $IC  $NO\f5 $DATE \u5\b0\f1 $NO\f3 $VOL $IC  $NO \f6$NET $NO\b0\u5\f1  $NO $CUR \u5\b0\f1 \u2\b2 $ACT"
 }
 
 Info_Bar() {

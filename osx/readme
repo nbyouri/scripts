@@ -1,7 +1,6 @@
 irc notifications
 brightness
 keyboard brightness
-cmus? status
 purgeable memory? -- top -S|awk '{print $2}'
 
 vm_stat

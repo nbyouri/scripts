@@ -5,8 +5,8 @@ BEGIN {
 			sprintf("xprop WM_NAME -id %s", $5) | getline;
 			gsub("\"", "",$3);
 		}
-		for(i = 3; i<100;i++) 
-		printf $i" "
+		for(i = 3; i<100;i++)
+			printf $i" "
 	}
 	#system("sleep 1");
 }

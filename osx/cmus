@@ -1,0 +1,28 @@
+#!/usr/bin/awk -f
+
+function CmusInfo() {
+	cmd = "cmus-remote -Q"
+	while(cmd | getline) {
+		if(/tag artist/) {
+			t = NF+1;
+			for(i=3; i<t; i++) {
+				printf $i" "
+			}
+		}
+	}
+	close(cmd)
+	printf "- "
+	while(cmd | getline) {
+		if(/tag title/) {
+			t = NF+1;
+			for(i=3; i<t; i++) {
+				printf $i" "
+			}
+		}
+	}
+	print "\n"
+}
+
+BEGIN {
+	CmusInfo();
+}

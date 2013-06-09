@@ -2,8 +2,7 @@
 BEGIN {
 	cmd = "ncmpcpp --now-playing"
 	while(cmd|getline) {
-		t = NF
-		for(i = 2; i<=t; i++) {
+		for(i = 2; i<=NF; i++) {
 			printf $i" "
 		}
 	}

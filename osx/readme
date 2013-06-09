@@ -1,17 +1,25 @@
+#Functions:
+
+This script is to be used with LemonBoy Bar.
+
+- ActiveWindow
+- BattInfo
+- CmusInfo
+- CpuTemp
+- CurrentWorkspace
+- DiskInfo
+- FanSpeed
+- LastFm
+- MailCount
+- MemUsage
+- NcmpcppPlaying
+- NetUsage
+- TotalWorkspaces
+- UhRss
+- Volume
+
+#TODO:
 irc notifications
 brightness
 keyboard brightness
 purgeable memory? -- top -S|awk '{print $2}'
-
-vm_stat
-launchctl
-defaults
-sysctl
-ioreg can be slow 
-system_profiler !slow
-pmset
-nvram
-sw_vers
-core utils (df, top, ...)
-systemsetup
-The programs in my Dotfiles repo

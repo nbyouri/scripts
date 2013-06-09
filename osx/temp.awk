@@ -1,9 +1,10 @@
+# This requires TemperatureMonitor.app.
 BEGIN {
-	cmd = "smc -f"
-	while (cmd | getline) {
-		if(/Temp         =/) {
-				printf("%.0f°\n", $3)
+		cmd = "smc -f"
+		while (cmd | getline) {
+				if(/Temp         =/) {
+						printf("%.0f°\n", $3)
+				}
 		}
-	}
 }
 

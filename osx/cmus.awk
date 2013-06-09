@@ -6,13 +6,13 @@ function CmusInfo() {
 		if(/tag artist/) {
 			t = NF+1;
 			for(i=3; i<t; i++) {
-				artist=artist $i " "
+				artist=artist $i" "
 			}
 		}
 		if(/tag title/) {
 			t = NF+1;
 			for(i=3; i<t; i++) {
-				title=title $i " "
+				title=title $i" "
 			}
 		}
 	}

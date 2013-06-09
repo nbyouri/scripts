@@ -42,6 +42,24 @@ function CmusInfo() {
     print artist "- " title
 }
 
+function CpuTem() {
+    cmd = "smc -f"
+    while (cmd | getline) {
+        if(/Temp         =/) {
+            printf("%.0f°\n", $3)
+        }
+    }
+}
+
+function CurrentWorkspace() {
+    cmd = "xprop -root _NET_CURRENT_DESKTOP"
+
+    while(cmd | getline) {
+        t = $3+1
+    }
+    print t
+}
+
 function DiskInfo() {
     cmd = "df"
     while(cmd|getline) {
@@ -131,15 +149,6 @@ function NetUsage() {
     printf("%.2f\n", out/1024)
 } 
 
-function CpuTem() {
-    cmd = "smc -f"
-    while (cmd | getline) {
-        if(/Temp         =/) {
-            printf("%.0f°\n", $3)
-        }
-    }
-}
-
 function TotalWorkspaces() {
     cmd = "xprop -root _NET_NUMBER_OF_DESKTOPS"
 
@@ -171,13 +180,4 @@ function Volume() {
         }
     }
     printf("%.0f%%", t/64*100);
-}
-
-function CurrentWorkspace() {
-    cmd = "xprop -root _NET_CURRENT_DESKTOP"
-
-    while(cmd | getline) {
-        t = $3+1
-    }
-    print t
 }

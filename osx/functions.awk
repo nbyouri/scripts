@@ -57,7 +57,7 @@ function CurrentWorkspace() {
     while(cmd | getline) {
         t = $3+1
     }
-    print t
+    return t
 }
 
 function DiskInfo() {
@@ -153,9 +153,9 @@ function TotalWorkspaces() {
     cmd = "xprop -root _NET_NUMBER_OF_DESKTOPS"
 
     while(cmd | getline) {
-        t = $3
+        t = $3+1
     }
-    print t
+    return t
 }
 
      
@@ -180,4 +180,26 @@ function Volume() {
         }
     }
     printf("%.0f%%", t/64*100);
+}
+
+function WorkspaceViewer() {
+    CWI[1]=""
+    CWI[2]=""
+    CWI[3]=""
+    CWI[4]=""
+    CWI[5]=""
+    TWS = TotalWorkspaces()
+    CW  = CurrentWorkspace()
+    for(i = 1; i<TWS; i++) {
+        if(i == CW) {
+            buffer=buffer"\\u5\\b0\\f1 "CWI[i]" \\u2\\b2\\f1"
+        } else {
+            buffer=buffer"\\u2\\b2 "CWI[i]" \\u2\\b2"
+        }
+    }
+    print buffer
+}
+
+BEGIN {
+    WorkspaceViewer()
 }

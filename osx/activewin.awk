@@ -8,5 +8,4 @@ BEGIN {
 		for(i = 3; i<100;i++)
 			printf $i" "
 	}
-	#system("sleep 1");
 }

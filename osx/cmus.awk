@@ -6,21 +6,18 @@ function CmusInfo() {
 		if(/tag artist/) {
 			t = NF+1;
 			for(i=3; i<t; i++) {
-				printf $i" "
+				artist=artist $i " "
+			}
+		}
+		if(/tag title/) {
+			t = NF+1;
+			for(i=3; i<t; i++) {
+				title=title $i " "
 			}
 		}
 	}
 	close(cmd)
-	printf "- "
-	while(cmd | getline) {
-		if(/tag title/) {
-			t = NF+1;
-			for(i=3; i<t; i++) {
-				printf $i" "
-			}
-		}
-	}
-	print "\n"
+	print artist "- " title
 }
 
 BEGIN {

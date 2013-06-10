@@ -3,8 +3,7 @@
 #use this with lemonboy bar.
 
 function ActiveWindow() {
-    cmd = "xprop -root _NET_ACTIVE_WINDOW"
-    while(cmd|getline) {
+    while("xprop -root _NET_ACTIVE_WINDOW"|getline) {
         if(/0x/) {
             sprintf("xprop WM_NAME -id %s", $5)|getline;
             gsub("\"", "",$3);
@@ -16,20 +15,18 @@ function ActiveWindow() {
 }
 
 function BattInfo() {
-    cmd = "pmset -g batt"
-    while(cmd|getline) {
+    while("pmset -g batt"|getline) {
         if (/%/) {
             t = $2
             sub(/;/,"", t); 
             sub(/%/,"", t);
-            printf "\\u0\\b0  \\u2\\b2 "t"\%%"
+            printf "\\u0\\b0 \\u2\\b2 "t"\%% "
         }
     }
 }
 
 function CmusInfo() {
-    cmd = "cmus-remote -Q"
-    while(cmd|getline) {
+    while("cmus-remote -Q"|getline) {
         if(/tag artist/) {
             for(i=3; i<=NF; i++) {
                 artist=artist $i" "
@@ -57,16 +54,14 @@ function CpuTemp() {
 }
 
 function CurrentWorkspace() {
-    cmd = "xprop -root _NET_CURRENT_DESKTOP"
-    while(cmd|getline) {
+    while("xprop -root _NET_CURRENT_DESKTOP"|getline) {
         t = $3+1
     }
     return t
 }
 
 function DiskInfo() {
-    cmd = "df"
-    while(cmd|getline) {
+    while("df"|getline) {
         if(/disk0s2/) {
             t = $5;
             sub(/%/,"", t);
@@ -76,8 +71,7 @@ function DiskInfo() {
 }
 
 function FanSpeed() {
-    cmd = "smc -f"
-    while(cmd|getline) {
+    while("smc -f"|getline) {
         if(/Actual/) {
             printf "\\u0\\b0  \\u2\\b2 "$4" rpm "
         }
@@ -115,8 +109,7 @@ function MailCount() {
 }
 
 function MemUsage() {
-    cmd= "vm_stat"
-    while(cmd|getline) {
+    while("vm_stat"|getline) {
         if(/Pages active/) {
             t = $3
             printf(" \\b0\\u0  \\b2\\u2 %.0fm ", t*0.004);
@@ -125,8 +118,7 @@ function MemUsage() {
 }
 
 function NcmpcppPlaying() {
-    cmd = "ncmpcpp --now-playing"
-    while(cmd|getline) {
+    while("ncmpcpp --now-playing"|getline) {
         printf "\\b0\\u0  \\b2\\u2 "
         for(i = 2; i<=NF; i++) {
             printf $i" "
@@ -153,15 +145,13 @@ function NetUsage() {
 } 
 
 function TimeDate() {
-    cmd = "date \"+%d/%H:%M\""
-    while(cmd|getline) {
+    while("date \"+%d/%H:%M\""|getline) {
         printf "\\b0\\u0  \\b2\\u2 "$0" " 
     }
 }
 
 function TotalWorkspaces() {
-    cmd = "xprop -root _NET_NUMBER_OF_DESKTOPS"
-    while(cmd|getline) {
+    while("xprop -root _NET_NUMBER_OF_DESKTOPS"|getline) {
         t = $3+1
     }
     return t
@@ -180,8 +170,7 @@ function UhRss() {
 }
 
 function Volume() { 
-    cmd = "ioreg -c IOAudioLevelControl"
-    while(cmd|getline) {
+    while("ioreg -c IOAudioLevelControl"|getline) {
         if(/IOAudioControlValue/) {
             t = $8
         }

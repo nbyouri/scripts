@@ -44,8 +44,7 @@ function CmusInfo() {
 }
 
 function CpuTemp() {
-    cmd = "smc -f"
-    while (cmd|getline) {
+    while ("smc -f"|getline) {
         if(/Temp         =/) {
             t = $3
         }

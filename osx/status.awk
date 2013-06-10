@@ -6,24 +6,24 @@ function ActiveWindow() {
     cmd = "xprop -root _NET_ACTIVE_WINDOW"
     while(cmd|getline) {
         if(/0x/) {
-            sprintf("xprop WM_NAME -id %s", $5) | getline;
+            sprintf("xprop WM_NAME -id %s", $5)|getline;
             gsub("\"", "",$3);
         }
+        printf "\\b0  "
         for(i = 3; i<=NF;i++) 
             printf  $i" "
     }
-    return
 }
 
 function BattInfo() {
     cmd = "pmset -g batt"
     while(cmd|getline) {
         if (/%/) {
-            t = $2
+            t = $2"%"
             sub(/;/,"", t); 
         }
     }
-    print t
+    return t
 }
 
 function CmusInfo() {
@@ -42,16 +42,17 @@ function CmusInfo() {
         }
     }
     close(cmd)
-    print artist "- " title
+    printf artist "- " title
 }
 
-function CpuTem() {
+function CpuTemp() {
     cmd = "smc -f"
     while (cmd|getline) {
         if(/Temp         =/) {
-            printf("%.0f°\n", $3)
+            t = $3
         }
     }
+    printf("%.0f\°", t)
 }
 
 function CurrentWorkspace() {
@@ -66,7 +67,7 @@ function DiskInfo() {
     cmd = "df"
     while(cmd|getline) {
         if(/disk0s2/) {
-            print $5
+            return $5
         }
     }
 }
@@ -75,7 +76,7 @@ function FanSpeed() {
     cmd = "smc -f"
     while(cmd|getline) {
         if(/Actual/) {
-            print $4" rpm"
+            printf $4
         }
     }
 }
@@ -91,7 +92,7 @@ function LastFm() {
             for (s in subs) {
                 gsub(s, subs[s], $3);
             }
-            print $3
+            printf $3
         }
     }
 }
@@ -105,7 +106,7 @@ function MailCount() {
             for (s in subs) {
                 gsub(s, subs[s]);
             }
-            print 
+            printf
         }
     }
 }
@@ -123,6 +124,7 @@ function MemUsage() {
 function NcmpcppPlaying() {
     cmd = "ncmpcpp --now-playing"
     while(cmd|getline) {
+        printf "  "
         for(i = 2; i<=NF; i++) {
             printf $i" "
         }
@@ -150,7 +152,7 @@ function NetUsage() {
 function TimeDate() {
     cmd = "date \"+%d/%H:%M\""
     while(cmd|getline) {
-        print 
+        printf "  "$0 
     }
 }
 
@@ -182,7 +184,7 @@ function Volume() {
             t = $8
         }
     }
-    printf("%.0f%%", t/64*100);
+    printf("  %.0f%%", t/64*100);
 }
 
 function WorkspaceViewer() {
@@ -200,19 +202,27 @@ function WorkspaceViewer() {
             buffer=buffer"\\u2\\b2 "CWI[i]" \\u2\\b2"
         }
     }
-    return buffer
+    printf buffer
 }
 
-BEGIN {
-    #Left status:
+function LeftStatus() {
+    printf "\\l"
+    printf TimeDate()Volume()NcmpcppPlaying()ActiveWindow()
+}
+
+function CenterStatus() {
+    printf "\\c"
     printf WorkspaceViewer()
-    printf " \\u5\\b0\\f1  "
-    printf TimeDate()
-    #printf "\\u5\\b0\\f1 \\u2\\b2 "; 
-    #printf "\\c"ActiveWindow()
+}
+
+function RightStatus() {
+    printf "\\r"
+    #printf CpuTemp()FanSpeed()"rpm"BattInfo()DiskInfo()"%"
+    printf FanSpeed()"rpm"MemUsage()
 }
 
 BEGIN {
-    printf "\\u5\\b0\\f1 \\u2\\b2 "; printf ActiveWindow()
+    LeftStatus()
+    CenterStatus()
+    #RightStatus()
 }
-

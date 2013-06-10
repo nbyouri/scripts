@@ -18,6 +18,10 @@ This script is to be used with LemonBoy Bar.
 - UhRss
 - Volume
 
+#Dependencies:
+
+- smc, can be found in my dotfile.
+- 
 #TODO:
 irc notifications
 brightness

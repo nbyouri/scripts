@@ -9,7 +9,7 @@ function ActiveWindow() {
             sprintf("xprop WM_NAME -id %s", $5)|getline;
             gsub("\"", "",$3);
         }
-        printf "\\b0  "
+        printf "\\b0\\u0 \\b2\\u2 "
         for(i = 3; i<=NF;i++) 
             printf  $i" "
     }
@@ -19,11 +19,12 @@ function BattInfo() {
     cmd = "pmset -g batt"
     while(cmd|getline) {
         if (/%/) {
-            t = $2"%"
+            t = $2
             sub(/;/,"", t); 
+            sub(/%/,"", t);
+            printf "\\u0\\b0  \\u2\\b2 "t"\%%"
         }
     }
-    return t
 }
 
 function CmusInfo() {
@@ -52,7 +53,7 @@ function CpuTemp() {
             t = $3
         }
     }
-    printf("%.0f\°", t)
+    printf("\\b0\\u0  \\u2\\b2 %.0f\° ", t)
 }
 
 function CurrentWorkspace() {
@@ -67,7 +68,9 @@ function DiskInfo() {
     cmd = "df"
     while(cmd|getline) {
         if(/disk0s2/) {
-            return $5
+            t = $5;
+            sub(/%/,"", t);
+            printf "\\u0\\b0  \\u2\\b2 "t"\%% "
         }
     }
 }
@@ -76,7 +79,7 @@ function FanSpeed() {
     cmd = "smc -f"
     while(cmd|getline) {
         if(/Actual/) {
-            printf $4
+            printf "\\u0\\b0  \\u2\\b2 "$4" rpm "
         }
     }
 }
@@ -116,7 +119,7 @@ function MemUsage() {
     while(cmd|getline) {
         if(/Pages active/) {
             t = $3
-            printf("%.0f", t*0.004);
+            printf(" \\b0\\u0  \\b2\\u2 %.0fm ", t*0.004);
         }
     }
 }
@@ -124,7 +127,7 @@ function MemUsage() {
 function NcmpcppPlaying() {
     cmd = "ncmpcpp --now-playing"
     while(cmd|getline) {
-        printf "  "
+        printf "\\b0\\u0  \\b2\\u2 "
         for(i = 2; i<=NF; i++) {
             printf $i" "
         }
@@ -152,7 +155,7 @@ function NetUsage() {
 function TimeDate() {
     cmd = "date \"+%d/%H:%M\""
     while(cmd|getline) {
-        printf "  "$0 
+        printf "\\b0\\u0  \\b2\\u2 "$0" " 
     }
 }
 
@@ -163,7 +166,6 @@ function TotalWorkspaces() {
     }
     return t
 }
-
      
 function UhRss() {
     FS="[\\[\\]]"
@@ -174,7 +176,7 @@ function UhRss() {
             t = $3
         }
     }
-    print t
+    printf t
 }
 
 function Volume() { 
@@ -184,7 +186,7 @@ function Volume() {
             t = $8
         }
     }
-    printf("  %.0f%%", t/64*100);
+    printf("\\b0\\u0 \\b2\\u2 %.0f%% ", t/64*100);
 }
 
 function WorkspaceViewer() {
@@ -197,7 +199,7 @@ function WorkspaceViewer() {
     CW  = CurrentWorkspace()
     for(i = 1; i<TWS; i++) {
         if(i == CW) {
-            buffer=buffer"\\u5\\b0\\f1 "CWI[i]" \\u2\\b2\\f1"
+            buffer=buffer"\\u0\\b0\\f1 "CWI[i]" \\u2\\b2"
         } else {
             buffer=buffer"\\u2\\b2 "CWI[i]" \\u2\\b2"
         }
@@ -217,12 +219,11 @@ function CenterStatus() {
 
 function RightStatus() {
     printf "\\r"
-    #printf CpuTemp()FanSpeed()"rpm"BattInfo()DiskInfo()"%"
-    printf FanSpeed()"rpm"MemUsage()
+    printf CpuTemp()FanSpeed()BattInfo()DiskInfo()MemUsage()
 }
 
 BEGIN {
     LeftStatus()
     CenterStatus()
-    #RightStatus()
+    RightStatus()
 }

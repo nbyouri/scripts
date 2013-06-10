@@ -21,7 +21,8 @@ This script is to be used with LemonBoy Bar.
 #Dependencies:
 
 - smc, can be found in my dotfile.
-- 
+
+
 #TODO:
 irc notifications
 brightness

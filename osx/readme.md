@@ -20,11 +20,12 @@ This script is to be used with LemonBoy Bar.
 
 #Dependencies:
 
-- smc, can be found in my dotfile.
+- smc, can be found in my [dotfiles](https://github.com/Unixhub/Dotfiles/tree/master/cpusage).
+- if you want cpu average usage in %, you can use cpusage, found in my [dotfiles](https://github.com/Unixhub/Dotfiles/tree/master/cpusage) as well.
 
 
 #TODO:
-irc notifications
-brightness
-keyboard brightness
-purgeable memory? -- top -S|awk '{print $2}'
+irc notifications    
+brightness     
+keyboard brightness     
+purgeable memory? -- top -S|awk '{print $2}'     

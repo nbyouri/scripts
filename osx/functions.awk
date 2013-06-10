@@ -1,4 +1,6 @@
 #!/usr/bin/awk -f
+#nawk aka one-true-awk aka BWK awk used.
+#use this with lemonboy bar.
 
 function ActiveWindow() {
     cmd = "xprop -root _NET_ACTIVE_WINDOW"
@@ -7,14 +9,15 @@ function ActiveWindow() {
             sprintf("xprop WM_NAME -id %s", $5) | getline;
             gsub("\"", "",$3);
         }
-        for(i = 3; i<100;i++) 
-        printf $i" "
+        for(i = 3; i<=NF;i++) 
+            printf  $i" "
     }
+    return
 }
 
 function BattInfo() {
     cmd = "pmset -g batt"
-    while(cmd | getline) {
+    while(cmd|getline) {
         if (/%/) {
             t = $2
             sub(/;/,"", t); 
@@ -25,7 +28,7 @@ function BattInfo() {
 
 function CmusInfo() {
     cmd = "cmus-remote -Q"
-    while(cmd | getline) {
+    while(cmd|getline) {
         if(/tag artist/) {
             for(i=3; i<=NF; i++) {
                 artist=artist $i" "
@@ -44,7 +47,7 @@ function CmusInfo() {
 
 function CpuTem() {
     cmd = "smc -f"
-    while (cmd | getline) {
+    while (cmd|getline) {
         if(/Temp         =/) {
             printf("%.0f°\n", $3)
         }
@@ -53,8 +56,7 @@ function CpuTem() {
 
 function CurrentWorkspace() {
     cmd = "xprop -root _NET_CURRENT_DESKTOP"
-
-    while(cmd | getline) {
+    while(cmd|getline) {
         t = $3+1
     }
     return t
@@ -84,8 +86,7 @@ function LastFm() {
     subs["–"] = "-"
     subs["amp;"] = ""
     cmd = sprintf("%s %s 2>/dev/null", "curl", URL);
-
-    while(cmd | getline) {
+    while(cmd|getline) {
         if (/^ *<title>/) {
             for (s in subs) {
                 gsub(s, subs[s], $3);
@@ -96,11 +97,10 @@ function LastFm() {
 }
 
 function MailCount() {
-    URL="https://youri.mout:**************8@mail.google.com/mail/feed/atom"
+    URL="https://youri.mout:**************@mail.google.com/mail/feed/atom"
     subs["<[^>]+>"] = ""
     cmd = sprintf("%s %s 2>/dev/null", "curl", URL);
-
-    while(cmd | getline) {
+    while(cmd|getline) {
         if(/fullcount/){
             for (s in subs) {
                 gsub(s, subs[s]);
@@ -112,7 +112,7 @@ function MailCount() {
 
 function MemUsage() {
     cmd= "vm_stat"
-    while(cmd | getline) {
+    while(cmd|getline) {
         if(/Pages active/) {
             t = $3
             printf("%.0f", t*0.004);
@@ -127,7 +127,6 @@ function NcmpcppPlaying() {
             printf $i" "
         }
     }
-    printf "\n"
 }
 
 function NetUsage() {
@@ -144,15 +143,20 @@ function NetUsage() {
     }
     inp = inp2 - inp1
     out = out2 - out1
-
     printf("%.2f  ", inp/1024)
     printf("%.2f\n", out/1024)
 } 
 
+function TimeDate() {
+    cmd = "date \"+%d/%H:%M\""
+    while(cmd|getline) {
+        print 
+    }
+}
+
 function TotalWorkspaces() {
     cmd = "xprop -root _NET_NUMBER_OF_DESKTOPS"
-
-    while(cmd | getline) {
+    while(cmd|getline) {
         t = $3+1
     }
     return t
@@ -163,8 +167,7 @@ function UhRss() {
     FS="[\\[\\]]"
     URL="http://forums.unixhub.net/syndication.php?limit=1"
     cmd = sprintf("%s %s 2>/dev/null", "curl", URL);
-
-    while(cmd | getline) {
+    while(cmd|getline) {
         if (/<title><!\[CDATA\[.*]\]/) {
             t = $3
         }
@@ -174,7 +177,7 @@ function UhRss() {
 
 function Volume() { 
     cmd = "ioreg -c IOAudioLevelControl"
-    while(cmd | getline) {
+    while(cmd|getline) {
         if(/IOAudioControlValue/) {
             t = $8
         }
@@ -197,9 +200,19 @@ function WorkspaceViewer() {
             buffer=buffer"\\u2\\b2 "CWI[i]" \\u2\\b2"
         }
     }
-    print buffer
+    return buffer
 }
 
 BEGIN {
-    WorkspaceViewer()
+    #Left status:
+    printf WorkspaceViewer()
+    printf " \\u5\\b0\\f1  "
+    printf TimeDate()
+    #printf "\\u5\\b0\\f1 \\u2\\b2 "; 
+    #printf "\\c"ActiveWindow()
 }
+
+BEGIN {
+    printf "\\u5\\b0\\f1 \\u2\\b2 "; printf ActiveWindow()
+}
+

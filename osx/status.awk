@@ -185,11 +185,11 @@ function WorkspaceViewer() {
     CWI[5]=""
     TWS = TotalWorkspaces()
     CW  = CurrentWorkspace()
-    for(i = 1; i<TWS; i++) {
+    for(i = 1; i<=5; i++) {
         if(i == CW) {
-            buffer=buffer"\\u0\\b0\\f1 "CWI[i]" \\u2\\b2"
+            buffer=buffer"\\u0\\b0 "CWI[i]" \\u2\\b2"
         } else {
-            buffer=buffer"\\u2\\b2 "CWI[i]" \\u2\\b2"
+            buffer=buffer " "CWI[i]" "
         }
     }
     printf buffer
@@ -197,7 +197,7 @@ function WorkspaceViewer() {
 
 function LeftStatus() {
     printf "\\l"
-    printf TimeDate()Volume()NcmpcppPlaying()ActiveWindow()
+    print TimeDate()Volume()NcmpcppPlaying()ActiveWindow()
 }
 
 function CenterStatus() {

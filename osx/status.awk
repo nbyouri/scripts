@@ -8,7 +8,7 @@ function ActiveWindow() {
             sprintf("xprop WM_NAME -id %s", $5)|getline;
             gsub("\"", "",$3);
         }
-        printf "\\b0\\u0 \\b2\\u2 "
+        printf "\\b0\\u0 \\b2 "
         for(i = 3; i<=NF;i++) 
             printf  $i" "
     }
@@ -39,7 +39,7 @@ function CmusInfo() {
             }
         }
     }
-    close(cmd)
+    printf "\\b0\\u0  \\b2\\u2 "
     printf artist "- " title
 }
 
@@ -69,6 +69,7 @@ function DiskInfo() {
     }
 }
 
+#Needs to be fixed
 function FanSpeed() {
     while("smc -f"|getline) {
         if(/Actual/) {
@@ -88,13 +89,14 @@ function LastFm() {
             for (s in subs) {
                 gsub(s, subs[s], $3);
             }
+            printf "\\b0\\u0  \\b2\\u2 "
             printf $3
         }
     }
 }
 
 function MailCount() {
-    URL="https://youri.mout:**************@mail.google.com/mail/feed/atom"
+    URL="https://youri.mout:************@mail.google.com/mail/feed/atom"
     subs["<[^>]+>"] = ""
     cmd = sprintf("%s %s 2>/dev/null", "curl", URL);
     while(cmd|getline) {
@@ -102,7 +104,7 @@ function MailCount() {
             for (s in subs) {
                 gsub(s, subs[s]);
             }
-            printf
+            printf "\\u0\\b0  \\b2\\u2 "$0
         }
     }
 }
@@ -125,6 +127,7 @@ function NcmpcppPlaying() {
     }
 }
 
+#Needs to be fixed.
 function NetUsage() {
     cmd = "netstat -ib -I en0"
     while(cmd|getline) {
@@ -139,6 +142,7 @@ function NetUsage() {
     }
     inp = inp2 - inp1
     out = out2 - out1
+    printf "\\b0\\u0  \\b2\\u2 "
     printf("%.2f  ", inp/1024)
     printf("%.2f\n", out/1024)
 } 
@@ -156,6 +160,7 @@ function TotalWorkspaces() {
     return t
 }
      
+# This needs to be fixed.
 function UhRss() {
     FS="[\\[\\]]"
     URL="http://forums.unixhub.net/syndication.php?limit=1"
@@ -165,6 +170,7 @@ function UhRss() {
             t = $3
         }
     }
+    printf "\\b0\\u0  \\b2\\u2"
     printf t
 }
 
@@ -183,9 +189,11 @@ function WorkspaceViewer() {
     CWI[3]=""
     CWI[4]=""
     CWI[5]=""
-    TWS = TotalWorkspaces()
+    #TWS = TotalWorkspaces() 
+    # You might want to enter this as a constant.
+    TWS = 5
     CW  = CurrentWorkspace()
-    for(i = 1; i<=5; i++) {
+    for(i = 1; i<=TWS; i++) {
         if(i == CW) {
             buffer=buffer"\\u0\\b0 "CWI[i]" \\u2\\b2"
         } else {
@@ -207,7 +215,7 @@ function CenterStatus() {
 
 function RightStatus() {
     printf "\\r"
-    printf CpuTemp()FanSpeed()BattInfo()DiskInfo()MemUsage()
+    printf CpuTemp()BattInfo()DiskInfo()MemUsage()
 }
 
 BEGIN {

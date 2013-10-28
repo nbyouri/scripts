@@ -1,1 +1,0 @@
-# Pkgsrc scripts for Darwin.

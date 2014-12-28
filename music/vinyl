@@ -1,0 +1,61 @@
+#/bin/sh
+
+# Requires shntool and cuetool and ffmpeg, flac, mac (alac)
+OUT_FORMAT="flac";
+NTRACK=0;
+CUE_FILE=$1;
+AUDIO_FILE=$2;
+FFMPEG=ffmpeg;
+CUE_PRINT=cueprint;
+CUE_BP=cuebreakpoints;
+CUE_TAG=cuetag.sh;
+SHN_SPLIT=shnsplit;
+
+usage() {
+    echo "usage: vynil [cuefile] [file]..."
+}
+
+main() {
+    # some error checking first
+    if [ $# -lt 1 ]; then
+        usage;
+        exit;
+    fi
+
+    if [ ! -f "$CUE_FILE" ]; then
+        echo "the cue file doesn't exist";
+        exit;
+    fi
+
+    if [ ! -f "$AUDIO_FILE" ]; then
+        echo "the audio file doesn't exist";
+        exit;
+    fi
+
+   if [ -f "split-track01.flac" ]; then
+        echo "split result files already existent, please clean up";
+        exit;
+    fi 
+
+    # total number of tracks on album
+    NTRACK=`cueprint -d '%N' "$CUE_FILE"`;
+
+    # split the file
+    echo "splitting $AUDIO_FILE...";
+    $($CUE_BP "$CUE_FILE" | $SHN_SPLIT -o $OUT_FORMAT "$AUDIO_FILE");
+
+    # tag the files
+    echo "tagging the files...";
+    $($CUE_TAG "$CUE_FILE" split*.$OUT_FORMAT);
+
+    # move the files and convert to alac
+    for i in `seq -f %02g 1 $NTRACK`; do
+        # Replace normal slashes with unicode ones because unix namei
+        TRACK=`$CUE_PRINT -n $i -t "%n - %t" "$CUE_FILE" | awk '{gsub(/\//, "⁄");print}'`;
+        mv "split-track$i.$OUT_FORMAT" "$TRACK.$OUT_FORMAT";
+        ffmpeg -i "$TRACK.$OUT_FORMAT" -map_metadata 0 -acodec alac "`basename "$TRACK.$OUT_FORMAT" .flac`.m4a";
+    done
+     
+}
+
+main "@"

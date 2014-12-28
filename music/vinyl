@@ -1,6 +1,7 @@
 #/bin/sh
 
 # Requires shntool and cuetool and ffmpeg, flac, mac (alac)
+# input files : cue file and flac/alac/ape file
 OUT_FORMAT="flac";
 NTRACK=0;
 CUE_FILE=$1;
